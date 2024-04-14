@@ -56,7 +56,8 @@ En este proyecto se han utilizado varias herramientas de vanguardia en el campo 
 ## Generación del Dataset
 Para este proyecto, he creado un conjunto de datos sintético que involucra una mezcla de diversas modulaciones tanto analógicas como digitales. La creación de un dataset sintético me permitió tener un control completo sobre las características del mismo, lo que es esencial para las pruebas específicas y la validación del modelo de aprendizaje automático. 
 
-En total se han generado 170000 muestras de señales ditribuidas de forma uniforme en todas las clses. Además se ha impuesto una relación señal a ruido aleatoria en todas las señales, con valores oscilando entre SNR de -20 a 30.
+En total se han generado 170000 muestras de señales ditribuidas de forma uniforme en todas las clases. Además se ha impuesto una relación señal a ruido aleatoria en todas las señales, con valores oscilando entre SNR de -20 a 30.
+
 
 ### Características Técnicas del Dataset
 - **Frecuencia de Muestreo:** 200,000 Hz (200 kHz).
@@ -96,6 +97,8 @@ A modo de ejemplo se adjuntan algunas imágenes de señales generadas:
 
 <img src="images/8qam.png" alt="drawing" width="400"/>
 
+Para poder ver en profundidad la forma de onda de las señales generadas, se recomienda ver el fichero **genDatasetVisualizacion.pdf**, en el que se van a encontrar todas las clases generadas.
+
 # Tranformaciones
 Antes de pasar la imagen por el modelo, se le realizan las siguientes transformaciones:
 - Cambio tamaño: Debido a que se está realizando transferlearning, los modelos empleados necesitan que la imagen de entrada sea de 224 x 224 pixeles, parámetro que no se pudo cambiar a la hora de realizar el dataset sintético. Por ello cada vez que se carga una imagen, es necesario adaptar el tamaño al exigido por el modelo.
@@ -110,11 +113,16 @@ transforms.Grayscale(num_output_channels=3)
 
 ## Resultados
 Una vez que se han entrenado los diferentes modelos, se va a evaluar su desempeño comparándo primero sus estadísticas absolutas y luego comparando entre ellos el desempeño.
+A la hora de evaluar el desempeño de un modelo sobre el dataset, se va a tener en cuenta la precisión que tiene a la hora de evaluar el dataset de validación, así como la distribución del error en las diferentes clases. De esta forma se quieren evitar modelos con alta precisiónen ciertas modulaciones y con altas tasas de error en otras.
 
 ### VGG
-
+#### Distribución error
+#### Precisión
 ### Mobile Net V2
+#### Distribución error
+#### Precisión
 ### Resnet 50
-
+#### Distribución error
+#### Precisión
 ### Mejor modelo
 Derivado de los resultados anteriores, se puede derivar que el mejor modelo a la hora de clasificar 
