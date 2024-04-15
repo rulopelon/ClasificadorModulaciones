@@ -89,95 +89,95 @@ for i= 1:1:SIGNALS_POR_MODULACION
     guardarEspectrograma(qpskSig,Fs,"qpsk_"+snr+"_"+i+".png")
 end
 %% 16-QAM
-M = 16;                                        % Orden de la modulación
-for i= 1:1:SIGNALS_POR_MODULACION
-
-    qam16Sig = qammod(dataBits,M,InputType="bit");    % Crear un modulador 16-QAM
-    % Se repiten las muestras para ajustarlo a Fs
-    qam16Sig = repelem(qam16Sig,muestras_bit);
-    qam16Sig = qam16Sig(1:LONGITUD_SIGNAL);
-    snr = SNR(randi(length(SNR)));
-
-    qam16Sig = awgn(qam16Sig,snr,"measured");
-    guardarEspectrograma(qam16Sig,Fs,"16qam_"+snr+"_"+i+".png")
-end
+% M = 16;                                        % Orden de la modulación
+% for i= 1:1:SIGNALS_POR_MODULACION
+% 
+%     qam16Sig = qammod(dataBits,M,InputType="bit");    % Crear un modulador 16-QAM
+%     % Se repiten las muestras para ajustarlo a Fs
+%     qam16Sig = repelem(qam16Sig,muestras_bit);
+%     qam16Sig = qam16Sig(1:LONGITUD_SIGNAL);
+%     snr = SNR(randi(length(SNR)));
+% 
+%     qam16Sig = awgn(qam16Sig,snr,"measured");
+%     guardarEspectrograma(qam16Sig,Fs,"16qam_"+snr+"_"+i+".png")
+% end
 %% 8-QAM
-M =8;                                        % Orden de la modulación
-for i= 1:1:SIGNALS_POR_MODULACION
-
-    qam8Sig = qammod(dataBits,M,InputType="bit");    % Crear un modulador 16-QAM
-    % Se repiten las muestras para ajustarlo a Fs
-    qam8Sig = repelem(qam8Sig,muestras_bit);
-    qam8Sig = qam8Sig(1:LONGITUD_SIGNAL);
-    snr = SNR(randi(length(SNR)));
-    qam8Sig = awgn(qam8Sig,snr,"measured");
-    guardarEspectrograma(qam8Sig,Fs,"8qam_"+snr+"_"+i+".png")
-end
+% M =8;                                        % Orden de la modulación
+% for i= 1:1:SIGNALS_POR_MODULACION
+% 
+%     qam8Sig = qammod(dataBits,M,InputType="bit");    % Crear un modulador 16-QAM
+%     % Se repiten las muestras para ajustarlo a Fs
+%     qam8Sig = repelem(qam8Sig,muestras_bit);
+%     qam8Sig = qam8Sig(1:LONGITUD_SIGNAL);
+%     snr = SNR(randi(length(SNR)));
+%     qam8Sig = awgn(qam8Sig,snr,"measured");
+%     guardarEspectrograma(qam8Sig,Fs,"8qam_"+snr+"_"+i+".png")
+% end
 %% 32-QAM
-M = 32;                                        % Orden de la modulación
-for i= 1:1:SIGNALS_POR_MODULACION
-
-    qam32Sig = qammod(dataBits,M,InputType="bit");    % Crear un modulador 16-QAM
-    % Se repiten las muestras para ajustarlo a Fs
-    qam32Sig = repelem(qam32Sig,muestras_bit);
-    qam32Sig = qam32Sig(1:LONGITUD_SIGNAL);
-    snr = SNR(randi(length(SNR)));
-    qam32Sig = awgn(qam32Sig,snr,"measured");
-    guardarEspectrograma(qam32Sig,Fs,"16qam_"+snr+"_"+i+".png")
-end
+% M = 32;                                        % Orden de la modulación
+% for i= 1:1:SIGNALS_POR_MODULACION
+% 
+%     qam32Sig = qammod(dataBits,M,InputType="bit");    % Crear un modulador 16-QAM
+%     % Se repiten las muestras para ajustarlo a Fs
+%     qam32Sig = repelem(qam32Sig,muestras_bit);
+%     qam32Sig = qam32Sig(1:LONGITUD_SIGNAL);
+%     snr = SNR(randi(length(SNR)));
+%     qam32Sig = awgn(qam32Sig,snr,"measured");
+%     guardarEspectrograma(qam32Sig,Fs,"16qam_"+snr+"_"+i+".png")
+% end
 %% 64-QAM
-M = 64;                                        % Orden de la modulación
-for i= 1:1:SIGNALS_POR_MODULACION
-    qam64Sig = qammod(dataBits,M,InputType="bit");     % Crear un modulador 64-QAM
-    qam64Sig = repelem(qam64Sig,muestras_bit);
-    qam64Sig = qam64Sig(1:LONGITUD_SIGNAL);
-    snr = SNR(randi(length(SNR)));
-    qam64Sig = awgn(qam64Sig,snr,"measured");
-    guardarEspectrograma(qam64Sig,Fs,"64qam_"+snr+"_"+i+".png")
-end
+% M = 64;                                        % Orden de la modulación
+% for i= 1:1:SIGNALS_POR_MODULACION
+%     qam64Sig = qammod(dataBits,M,InputType="bit");     % Crear un modulador 64-QAM
+%     qam64Sig = repelem(qam64Sig,muestras_bit);
+%     qam64Sig = qam64Sig(1:LONGITUD_SIGNAL);
+%     snr = SNR(randi(length(SNR)));
+%     qam64Sig = awgn(qam64Sig,snr,"measured");
+%     guardarEspectrograma(qam64Sig,Fs,"64qam_"+snr+"_"+i+".png")
+% end
 
 
 %% ASK modulation
-A1=1;      % Amplitude of carrier signal for information 1
-A2=0;       % Amplitude of carrier signal for information 0
-bp = 1/bitrate;
-t2=0:1/Fs:bp;
-for i= 1:1:SIGNALS_POR_MODULACION    
-
-    f=2e3 + (rand * (500e3 - 2e3));    % carrier frequency
-    
-    askSig=[];
-    for j=1:1:length(dataBits)
-        if dataBits(j)==1
-            y=A1*cos(2*pi*f*t2);
-        else
-            y=A2*cos(2*pi*f*t2);
-        end
-        askSig=[askSig y];
-    end
-    askSig = askSig(1:LONGITUD_SIGNAL);
-    snr = SNR(randi(length(SNR)));
-    askSig = awgn(askSig,snr,"measured");
-    guardarEspectrograma(askSig,Fs,"ask_"+snr+"_"+i+".png")
-
-end
+% A1=1;      % Amplitude of carrier signal for information 1
+% A2=0;       % Amplitude of carrier signal for information 0
+% bp = 1/bitrate;
+% t2=0:1/Fs:bp;
+% for i= 1:1:SIGNALS_POR_MODULACION    
+% 
+%     f=2e3 + (rand * (500e3 - 2e3));    % carrier frequency
+% 
+%     askSig=[];
+%     for j=1:1:length(dataBits)
+%         if dataBits(j)==1
+%             y=A1*cos(2*pi*f*t2);
+%         else
+%             y=A2*cos(2*pi*f*t2);
+%         end
+%         askSig=[askSig y];
+%     end
+%     askSig = askSig(1:LONGITUD_SIGNAL);
+%     snr = SNR(randi(length(SNR)));
+%     askSig = awgn(askSig,snr,"measured");
+%     guardarEspectrograma(askSig,Fs,"ask_"+snr+"_"+i+".png")
+% 
+% end
 
 %% FSK modulation
-for i= 1:1:SIGNALS_POR_MODULACION    
-    M= 2;
-    freq_sep = 20 + (rand * (10e3 - 20));
-    nsamp = 2;
-    fskSig = fskmod(dataBits,M,freq_sep,nsamp,Fs);
-    fskSig = fskSig(1:LONGITUD_SIGNAL);
-    snr = SNR(randi(length(SNR)));
-    fskSig = awgn(fskSig,snr,"measured");
-    guardarEspectrograma(fskSig,Fs,"fsk_"+snr+"_"+i+".png")
-end
+% for i= 1:1:SIGNALS_POR_MODULACION    
+%     M= 2;
+%     freq_sep = 20 + (rand * (10e3 - 20));
+%     nsamp = 2;
+%     fskSig = fskmod(dataBits,M,freq_sep,nsamp,Fs);
+%     fskSig = fskSig(1:LONGITUD_SIGNAL);
+%     snr = SNR(randi(length(SNR)));
+%     fskSig = awgn(fskSig,snr,"measured");
+%     guardarEspectrograma(fskSig,Fs,"fsk_"+snr+"_"+i+".png")
+% end
 %% Ruido
-for i= 1:1:SIGNALS_POR_MODULACION 
-    ruido = rand(LONGITUD_SIGNAL,1);
-    guardarEspectrograma(ruido,Fs,"noise_"+i+".png")
-end
+% for i= 1:1:SIGNALS_POR_MODULACION 
+%     ruido = rand(LONGITUD_SIGNAL,1);
+%     guardarEspectrograma(ruido,Fs,"noise_"+i+".png")
+% end
 
 %% OFDM modulation
 numSubcarriers = [64,128,252];
