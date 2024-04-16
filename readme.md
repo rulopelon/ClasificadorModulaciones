@@ -119,11 +119,14 @@ A modo de ejemplo se adjuntan algunas imágenes de señales generadas:
 <p align="center">
   <img src="images/ask.png" alt="drawing" width="400"/>
 </p>
+
 **Señal 8QAM**
 <p align="center">
   <img src="images/8qam.png" alt="drawing" width="400"/>
 </p>
-Para poder ver en profundidad la forma de onda de las señales generadas, se recomienda ver el fichero **genDatasetVisualizacion.pdf**, en el que se van a encontrar todas las clases generadas.
+Para poder ver en profundidad la forma de onda de las señales generadas, se recomienda ver el fichero <strong>genDatasetVisualizacion.pdf</strong>, en el que se van a encontrar todas las clases generadas.
+
+
 
 # Tranformaciones
 Antes de pasar la imagen por el modelo, se le realizan las siguientes transformaciones:
