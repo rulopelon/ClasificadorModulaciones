@@ -25,6 +25,19 @@ Para entrenar los modelos se han empleado técnicas de transferlearning, descrit
 ## Transfer Learning
 El **Transfer Learning** es una técnica de aprendizaje automático que se centra en almacenar el conocimiento adquirido al resolver un problema y aplicarlo a un problema diferente pero relacionado. En otras palabras, en lugar de empezar el aprendizaje desde cero, el modelo utiliza conocimientos previamente aprendidos de una tarea para mejorar o acelerar el aprendizaje en otra nueva tarea.
 
+Para cada modelo empleado se va a sustituir la parte de clasificación del modelo por una red neuronal personalizada. Además dentro de cada modelo preentrenado, se van a descongelar capas de forma secuencial hasta que se obtenga la precisión esperada. Esto se hace para adaptar aún más el modelo base conforme al problema de clasificación que se quire solucionar.
+
+A modo de resumen se adjunta una ilustración en la que se diferencian las partes de los modelos finales que se va a emplear en la predicción:
+
+<p align="center">
+  <img src="images/diagramaModelo.png" alt="drawing" width="400"/>
+</p>
+
+El proceso de entrenamiento en detalle se describe en el apartado [entrenamiento modelos](#entrenamiento-modelos).
+
+Los modelos sobre los que se ha entrenado el conjunto de datos son los siguientes: 
+
+
 ## ResNet
 **ResNet**, que significa Redes Residuales, es un tipo de arquitectura de red neuronal que facilita el entrenamiento de redes mucho más profundas mediante el uso de conexiones residuales. Estas conexiones permiten que las señales salten capas, lo que ayuda a combatir el problema del desvanecimiento de gradientes en redes profundas.
 
@@ -50,6 +63,8 @@ En este proyecto se han utilizado varias herramientas de vanguardia en el campo 
 ### Streamlit
 **Streamlit** es una herramienta que permite a los desarrolladores crear aplicaciones web para proyectos de ciencia de datos y aprendizaje automático de manera rápida y con poco esfuerzo. Con Streamlit, es posible transformar scripts de análisis de datos en aplicaciones web interactivas sin necesidad de utilizar frameworks web tradicionales. Es ideal para prototipar rápidamente y compartir los resultados del proyecto, ofreciendo widgets interactivos para manipular los datos o ajustar los parámetros del modelo directamente desde la interfaz de usuario.
 
+Esta herramienta se va a emplear para poder desplegar el modelo en un entorno de producción simulado. El usuario deberá de subir a la plataforma una imagen con la representación de la parte real en el dominio del tiempo de la señal que desea clasificar, por detrás el modelo predicirá cual es el tipo de señal que se ha introducido.
+
 ### MATLAB
 **MATLAB** es un entorno de programación y lenguaje de programación de alto nivel utilizado principalmente para computación numérica. Desarrollado por MathWorks, MATLAB permite la manipulación de matrices, la representación gráfica de funciones y datos, la implementación de algoritmos y la creación de interfaces de usuario. En el campo del aprendizaje automático y el análisis de datos, MATLAB ofrece cajas de herramientas especializadas para el procesamiento de señales, aprendizaje automático, redes neuronales, y más, facilitando el desarrollo y la simulación de modelos complejos.
 
@@ -58,6 +73,14 @@ Para este proyecto, he creado un conjunto de datos sintético que involucra una 
 
 En total se han generado 170000 muestras de señales ditribuidas de forma uniforme en todas las clases. Además se ha impuesto una relación señal a ruido aleatoria en todas las señales, con valores oscilando entre SNR de -20 a 30.
 
+Para comprobar que el dataset generado está balanceado y que no tiene sesgo hacia valores de SNR, se ha obtenido el siguiente histograma representando los valores de SNR en todo el conjunto de datos:
+
+
+<p align="center">
+  <img src="images/distribucionSNR.png" alt="drawing" width="400"/>
+</p>
+
+Por inspección visual se puede comprobar como el dataset es apropiado y los valores se encuentran distribuidos de forma uniforme.
 
 ### Características Técnicas del Dataset
 - **Frecuencia de Muestreo:** 200,000 Hz (200 kHz).
@@ -86,17 +109,20 @@ Este conjunto de modulaciones proporciona una diversidad rica y compleja en el d
 A modo de ejemplo se adjuntan algunas imágenes de señales generadas:
 
 **Señal FM**
-
+<p align="center">
 <img src="images/fm.png" alt="drawing" width="400"/>
+</p>
 
 **Señal ASK**
 
-<img src="images/ask.png" alt="drawing" width="400"/>
 
+<p align="center">
+  <img src="images/ask.png" alt="drawing" width="400"/>
+</p>
 **Señal 8QAM**
-
-<img src="images/8qam.png" alt="drawing" width="400"/>
-
+<p align="center">
+  <img src="images/8qam.png" alt="drawing" width="400"/>
+</p>
 Para poder ver en profundidad la forma de onda de las señales generadas, se recomienda ver el fichero **genDatasetVisualizacion.pdf**, en el que se van a encontrar todas las clases generadas.
 
 # Tranformaciones
@@ -109,11 +135,30 @@ transforms.Resize(size=(224,224))
 ```
 transforms.Grayscale(num_output_channels=3)
 ```
+## Entrenamiento modelos
+Para realizar el entrenamiento de los modelos, se va a hacer uso de varias técnicas y herramientas.
 
+La primera de todas es que se va a hacer uso de Optuna como herramienta para encontrar los parámetros óptimos del modelo. En concreto en este modelo se han optimizado: la tasa de aprendizaje, el número de capas en una red neuronal de clasificación, el número de neuronas en cada capa, el valor de dropout de la capa previa cada capa lineal en el segmento de clasificación. 
+
+Para poder encontrar los parámetros óptimos, se tiene que definir un espacio de búsqueda de estos. 
+Optuna ejecuta esta función objective, la cual realiza el entrenamiento y devuelve un valor de rendimiento que Optuna usa para guiar la búsqueda de la configuración óptima.
+
+Por otro lado, para evitar tanto overfitting, como tiempos de entrenamiento elevados en epochs que ya no aportan beneficio en el conjunto de validación, se va a incorporar un algoritmo de early stopping.
+
+Este algoritmo obtiene el error de validación en cada una de las iteraciones del entrenamiento, si el error de validación no disminuye en 30 iteraciones, el intento se considera como finalizado y se deja de entrenar. Después de esto se buscan otros parámetros nuevos obtenidos de optuna, y se comienza el proceso de nuevo.
+
+El diagrama de flujo seguido en el entrenamiento es el siguiente:
+
+<p align="center">
+  <img src="images/diagramaFlujo.png" alt="drawing" width="400"/>
+</p>
 
 ## Resultados
-Una vez que se han entrenado los diferentes modelos, se va a evaluar su desempeño comparándo primero sus estadísticas absolutas y luego comparando entre ellos el desempeño.
-A la hora de evaluar el desempeño de un modelo sobre el dataset, se va a tener en cuenta la precisión que tiene a la hora de evaluar el dataset de validación, así como la distribución del error en las diferentes clases. De esta forma se quieren evitar modelos con alta precisiónen ciertas modulaciones y con altas tasas de error en otras.
+Una vez que se han entrenado los diferentes modelos por medio de técnicas de transfer learning, se va a evaluar su desempeño comparándo primero sus estadísticas absolutas y luego comparando entre ellos el desempeño.
+
+A la hora de evaluar rendimiento de un modelo sobre el dataset, se va a tener en cuenta la precisión que tiene a la hora de evaluar el dataset de validación, así como la distribución del error en las diferentes clases. De esta forma se quieren evitar modelos con alta precisiónen ciertas modulaciones y con altas tasas de error en otras.
+
+Además se va a tener en cuenta la diferencia entre el error en el conjunto de validación y el error en el conjunto de entrenamient, de esta forma se evita que exista overfitting del modelo al conjunto de entrenamiento.
 
 ### VGG
 #### Distribución error
@@ -126,3 +171,9 @@ A la hora de evaluar el desempeño de un modelo sobre el dataset, se va a tener 
 #### Precisión
 ### Mejor modelo
 Derivado de los resultados anteriores, se puede derivar que el mejor modelo a la hora de clasificar 
+
+# TODO
+Sacar gráficas de train y validation loss
+Calcular el error de cada modelo
+Elegir el mejor modelo
+Desplegar la solución en streamlit

@@ -1,8 +1,5 @@
 *.jpeg
 *.jpg
 *.png
-!fm.png
-!8qam.png
-!ask.png
-!mobilenet.png
-!vgg.png
+
+!images/*

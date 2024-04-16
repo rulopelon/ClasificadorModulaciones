@@ -1,0 +1,44 @@
+<mxfile host="app.diagrams.net" modified="2024-04-16T15:36:10.463Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="WWhu0mBSZIvgHamfEJJv" version="24.2.5" type="device">
+  <diagram name="Page-1" id="m8BcWv5EsL6y6WJ2S4jR">
+    <mxGraphModel dx="1195" dy="650" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tzIqL0q2C7g6MLkhlnO7-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=210;exitDy=80;exitPerimeter=0;entryX=-0.032;entryY=0.573;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="tzIqL0q2C7g6MLkhlnO7-1" target="tzIqL0q2C7g6MLkhlnO7-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="190.2" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tzIqL0q2C7g6MLkhlnO7-1" value="Feature extraction modelo preentrenado" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="275" y="110" width="210" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="tzIqL0q2C7g6MLkhlnO7-2" value="Red clasificación personalizada" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="110" width="100" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="tzIqL0q2C7g6MLkhlnO7-5" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_1;align=left;pointerEvents=1;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="342.5" y="202.5" width="40" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="tzIqL0q2C7g6MLkhlnO7-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="tzIqL0q2C7g6MLkhlnO7-6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tzIqL0q2C7g6MLkhlnO7-6" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.container_registry_image;" vertex="1" parent="1">
+          <mxGeometry x="155" y="140" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tzIqL0q2C7g6MLkhlnO7-7" value="Imagen entrada" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="140" y="230" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tzIqL0q2C7g6MLkhlnO7-8" value="Pesos originales" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="295" y="318" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tzIqL0q2C7g6MLkhlnO7-9" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_1;align=left;pointerEvents=1;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="441.25" y="251.25" width="40" height="47.5" as="geometry" />
+        </mxCell>
+        <mxCell id="tzIqL0q2C7g6MLkhlnO7-10" value="Capas&amp;nbsp;&lt;div&gt;descongeladas&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="405" y="313" width="100" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
