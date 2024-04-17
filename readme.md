@@ -1,5 +1,5 @@
 # Clasificador modulaciones
-
+![imagen-logo](/images/logo.PNG)
 ## Índice
 - [Introducción](#introducción)
 - [Transfer Learning](#transfer-learning)
@@ -163,17 +163,46 @@ A la hora de evaluar rendimiento de un modelo sobre el dataset, se va a tener en
 
 Además se va a tener en cuenta la diferencia entre el error en el conjunto de validación y el error en el conjunto de entrenamient, de esta forma se evita que exista overfitting del modelo al conjunto de entrenamiento.
 
+Al realizarse el entrenamiento por medio de optuna, se pueden obtener cuales son los parámetros que más influyen a la hora de hacer que el modelo sea apropiado. Esto también puede dar una idea de cuales pueden ser los puntos de mejora, ya que un pequeño cambio en el parámetro puede influir de forma significativa en el desempeño del modelo
+
 ### VGG
+#### Entrenamiento
+Al entrenar el modelo MobileNet con diversas variaciones de parámetros, se produce el siguiente gráfico que ilustra la precisión alcanzada en diferentes epochs frente al número de intentos:
+
+#### Importancia parámetros
+Al evaluar cuál parámetro tiene mayor influencia en la precisión del modelo, se ha generado el siguiente gráfico:
+
 #### Distribución error
 #### Precisión
+
 ### Mobile Net V2
+#### Entrenamiento
+Al realizar el entrenamiento con diferentes variaciones de parámetros sobre el modelo MobileNet, se obtiene el siguiente gráfico de intentos frente a precisión en los diferentes epochs:
+
+![intermedioMobileNet](/images/intermediateMobileNet.png)
+
+Efectivamente existe una tendencia de todos los modelos hacia precisiones altas, por lo que el echo de obtener este modelo no es un outlier del proceso de entrenamiento, si no que tiene sentido a nivel global.
+
+#### Importancia parámetros
+A la hora de evaluar cual es el parámetro que más influye a la hora de determinar la precisión, se ha obtenido el siguiente gráfico:
+![importancia-mobileNet](/images/importanceMobileNet.png)
+
+Es reseñable destacar que los dos parámetros que más influencia tienen en el modelo son el número de capas y el factor de dropout de la segunda capa de la red de clasificación. Esto tiene sentido, puesto que es en las primeras capas donde más información se extrae de las features del segmento de **feature extraction**
+
 #### Distribución error
 #### Precisión
 ### Resnet 50
+#### Entrenamiento
+Cuando se entrena el modelo de Resnet50 con diferentes configuraciones de parámetros, se genera el siguiente gráfico que muestra la relación entre los intentos y la precisión en distintos epochs:
+
+#### Importancia parámetros
+Al evaluar cuál es el parámetro que más impacta en la precisión del modelo, se ha generado el siguiente gráfico:
+
 #### Distribución error
 #### Precisión
 ### Mejor modelo
-Derivado de los resultados anteriores, se puede derivar que el mejor modelo a la hora de clasificar 
+Derivado de los resultados anteriores, se puede derivar que el mejor modelo a la hora de clasificar las modulaciones, se puede observar la evolución de la precisión del modelo.
+
 
 # TODO
 Sacar gráficas de train y validation loss
