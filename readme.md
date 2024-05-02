@@ -7,8 +7,8 @@
 - [VGG](#vgg)
 - [MobileNet](#mobilenet)
 - [Herramientas](#herramientas)
-- [Generación dataset](#Generación-dataset)
-- [Resultados](#Resultados)
+- [Generación dataset](#generación-del-dataset)
+- [Resultados](#mejor-modelo)
 
 ## Introducción
 El objetivo de este proyecto es realizar un modelo de deeplearning capaz de clasificar la modulaciónde una señal cn un precisión adecuada.
@@ -167,13 +167,47 @@ Al realizarse el entrenamiento por medio de optuna, se pueden obtener cuales son
 
 ### VGG
 #### Entrenamiento
-Al entrenar el modelo MobileNet con diversas variaciones de parámetros, se produce el siguiente gráfico que ilustra la precisión alcanzada en diferentes epochs frente al número de intentos:
+Al entrenar el modelo <vgg> con diversas variaciones de parámetros, se produce el siguiente gráfico que ilustra la precisión alcanzada en diferentes epochs frente al número de intentos:
+
+![intermedioVgg](/images/intermediateVgg.png)
+
+Como se puede apreciar, todos los intentos tienen una precisión similar, indicando que el modelo obtenido está en la media de todos los realizados.
 
 #### Importancia parámetros
 Al evaluar cuál parámetro tiene mayor influencia en la precisión del modelo, se ha generado el siguiente gráfico:
 
+![importancia-Vgg](/images/importanceVgg.png)
+
+Como es de esperar, entre los parámetros más importantes se encuentran tanto el número de neuronas como el factor de regularización del dropout, ya que es el que decide que cantidad de información pasa hacia la siguente capa.
+
 #### Distribución error
+
+
+Tras evaluar la distribución del error en todo el dataset, se ha obtenido la siguiente gráfica:
+
+<p align="center">
+  <img src="images/distribucionErrorVgg.png" alt="drawing" width="400"/>
+</p>
+
+A pesar de que la precisión final es bastante reducida. La distribución del error de clasificación es bastante positiva, no hay ninguna clase que resalte por la demás salvo por variaciones de 3 puntos de precisión.
+
+Si no fuera por la baja precisión final, este modelo sería apropiado para la clasificación de modulaciones.
 #### Precisión
+
+Al finalizar el entrenamiento se realiza el análisis de la precisión del modelo. Este modelo tiene una precisión del 18% en el conjunto de validación.
+
+Como se puede observar en las dos imágenes inferiores, la evolución del error con respecto a los epochs de entrenamiento es no es lo ficientemente acusada como para justificar seguir entrenando el modelo.
+
+Por otro lado,la diferencia entre la precisión en el conjunto de validación y el de entrenamiento no es lo suficientemente grande como para afirmar que el modelo presente overfitting.
+
+![curva-entrenamiento](/images/training_vs_validation_accuracy_Vgg.png)
+
+Además se ha obtenido la curva del error a medida que se avanza en el entrenamiento:
+
+![curva-entrenamiento](/images/training_vs_validation_loss_Vgg.png)
+
+La precisión del modelo no es lo suficientemente alta, pero el modelo no presenta overfitting.
+Este modelo no es adecuado para esta tarea de clasificación.
 
 ### Mobile Net V2
 #### Entrenamiento
@@ -190,22 +224,65 @@ A la hora de evaluar cual es el parámetro que más influye a la hora de determi
 Es reseñable destacar que los dos parámetros que más influencia tienen en el modelo son el número de capas y el factor de dropout de la segunda capa de la red de clasificación. Esto tiene sentido, puesto que es en las primeras capas donde más información se extrae de las features del segmento de **feature extraction**
 
 #### Distribución error
+Tras evaluar la distribución del error en todo el dataset, se ha obtenido la siguiente gráfica:
+
+<p align="center">
+  <img src="images/distribucionErrorMobile.png" alt="drawing" width="400"/>
+</p>
+
+La clase que peor se clasifica en este caso es la clase de QPSK, esto puede ser debido a que el modelo es peor clasificando señales con amplitud constante, y confunde esta modulación con otras que también tienen amplitud constante como por ejemplo la familia de las de modulación en cuadratura (xQAM).
+
 #### Precisión
+Al finalizar el entrenamiento se realiza el análisis de la precisión del modelo. Este modelo tiene una precisión del 92% en el conjunto de validación.
+
+Como se puede observar en las dos imágenes inferiores, la evolución del error con respecto a los epochs de entrenamiento es adecuada, además la diferencia entre la precisión en el conjunto de validación y el de entrenamiento no es lo suficientemente grande como para afirmar que el modelo presente overfitting.
+![curva-entrenamiento](/images/training_vs_validation_accuracy_Mobile.png)
+
+Además se ha obtenido la curva del error a medida que se avanza en el entrenamiento. 
+![curva-entrenamiento](/images/training_vs_validation_loss_Mobile.png)
+
+Esta curva es apropiada puesto que el error disminuye de forma apropiada a medida que avanza el entrenamiento.
 ### Resnet 50
 #### Entrenamiento
 Cuando se entrena el modelo de Resnet50 con diferentes configuraciones de parámetros, se genera el siguiente gráfico que muestra la relación entre los intentos y la precisión en distintos epochs:
 
+![intermedioMobileNet](/images/intermediateResNet.png)
+
+De esta gráfica se deriva que existe una variedad de modelos que sí que son adecuados para la tarea descrita, mientras que existe una variedad de combinaciones que no proporcionan resultados adecuados. 
+
+Para el modulo evaluado se ha escogido el modelo del conjunto de modelos apropiado.
+
 #### Importancia parámetros
 Al evaluar cuál es el parámetro que más impacta en la precisión del modelo, se ha generado el siguiente gráfico:
 
+![importancia-mobileNet](/images/importanceResNet.png)
+
+Cabe destacar que en este caso el parámetro más importante en la clasificación de las modulaciones es la tasa de aprendizaje. Indicando que en este modelo, la parte de extracción de features del modelo preentrenado está siendo mucho más importe que la parte de clasificación añadida posteriormente.
+
 #### Distribución error
+Tras evaluar la distribución del error en todo el dataset, se ha obtenido la siguiente gráfica:
+
+<p align="center">
+  <img src="images/distribucionErrorResnet.png" alt="drawing" width="400"/>
+</p>
+
+Es apreciable una disminución en la precisión total del modelo. Esto es debido a que el error en la clasificación de la modulación digital FSK es es mucho mayor a la de las demás modulaciones.
+
+Este resultado tiene sentido puesto que es la modulación más parecida a todas las presentes. Es de amplitud constante, al igual que las xQAM, y varía la frecuencia como en las analógicas.
+
 #### Precisión
+Al finalizar el entrenamiento se realiza el análisis de la precisión del modelo. Este modelo tiene una precisión del 89% en el conjunto de validación.
+
+Como se puede observar en las dos imágenes inferiores, la evolución del error con respecto a los epochs de entrenamiento es adecuada, además la diferencia entre la precisión en el conjunto de validación y el de entrenamiento no es lo suficientemente grande como para afirmar que el modelo presente overfitting.
+![curva-entrenamiento](/images/training_vs_validation_accuracy_resnet.png)
+
+Además se ha obtenido la curva del error a medida que se avanza en el entrenamiento. 
+![curva-entrenamiento](/images/training_vs_validation_loss_resnet.png)
+
+Esta curva es apropiada puesto que el error disminuye de forma apropiada a medida que avanza el entrenamiento. Además la diferencia de la precisión y el error entre el conjunto de entrenamiento y el conjunto de validación es lo suficientemente pequeña como para afirmar que el modelo propuesto no tiene overfitting del conjunto de entrenamiento
 ### Mejor modelo
-Derivado de los resultados anteriores, se puede derivar que el mejor modelo a la hora de clasificar las modulaciones, se puede observar la evolución de la precisión del modelo.
+Derivado de los resultados anteriores, se puede derivar que el mejor modelo a la hora de clasificar las modulaciones es el que hace transfer learning sobre **Resnet50** , se puede observar la evolución de la precisión del modelo es adecuada y que tiene una distribución del error proporcionada. En este caso se prefiere encontrar un modelo capaz de generalizar mejor a tener una precisión muy alta en algunas clases y baja en otras, es por ello que se ha preferido.
 
+Es cierto que este modelo tiene una precisión mucho menor a la hora de clasificar la modulación digital FSK. En futuras iteraciones se debería de aumentar el número de muestras de esta modulación con el fin de incrementar la precisión del modelo en esta.
 
-# TODO
-Sacar gráficas de train y validation loss
-Calcular el error de cada modelo
-Elegir el mejor modelo
-Desplegar la solución en streamlit
+Como norma general se ha visto un decremento de la precisión a la hora de evaluarlo con el dataset global. Esto es porque se han guardado muestras que no se han visto ni en el entrenamiento ni en la validación. Se ha hecho esto para simular un entorno real en el que el modelo no puede ver todas las muestras.

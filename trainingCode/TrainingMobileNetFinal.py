@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-directorioTrain = "training"
-directorioTest = "validation"
+directorioTrain ="C:/Users/raul/Documents/GitHub/ClasificadorModulaciones/data/datasetTotal"
+directorioTest = "C:/Users/raul/Documents/GitHub/ClasificadorModulaciones/data/datasetTotal"
 
 
 class_to_index = {'16qam':0, '8qam':1, 'am':2,'fsk':3,'qpsk':4,'64qam':5,'ask':6,'fm':7,'pm':8}
@@ -140,6 +140,7 @@ def train_and_validate(model, device, train_loader, val_loader, epochs, optimize
     criterion = nn.CrossEntropyLoss()
 
     history = {'train_loss': [], 'train_accuracy': [], 'valid_loss': [], 'valid_accuracy': []}
+
     print("Empieza el entrenamiento")
 
     creado = False
@@ -190,6 +191,12 @@ def train_and_validate(model, device, train_loader, val_loader, epochs, optimize
             valid_loss += loss.item()
             valid_accuracy += (outputs.argmax(1) == labels.argmax(1)).sum().item()
 
+        if model.earlyStopper.early_stop(valid_loss):
+            model_file = f"MobileNetFinal.pth"
+            torch.save(model.state_dict(), model_file)
+            #wandb.save(model_file)
+
+            return valid_accuracy,history
         valid_loss /= len(val_loader)
         valid_accuracy /= len(val_loader.dataset)
         valid_accuracy = valid_accuracy*100
@@ -262,6 +269,7 @@ if __name__ == '__main__':
 
     accuracy, history = main()
     # Gráfico de losses
+    # Gráfico de losses
     plt.figure(figsize=(10, 5))
     plt.plot(history['train_loss'], label='Train Loss')
     plt.plot(history['valid_loss'], label='Valid Loss')
@@ -269,7 +277,7 @@ if __name__ == '__main__':
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
-    plt.show()
+    plt.savefig('training_vs_validation_loss_Mobile.png')  # Guardar el gráfico antes de mostrarlo
 
     # Gráfico de accuracies
     plt.figure(figsize=(10, 5))
@@ -279,7 +287,7 @@ if __name__ == '__main__':
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.legend()
-    plt.show()
+    plt.savefig('training_vs_validation_accuracy_Mobile.png')  # Guardar el gráfico antes de mostrarlo
 
 
 
